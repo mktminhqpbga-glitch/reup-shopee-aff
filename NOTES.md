@@ -46,7 +46,8 @@
 
 - Đã chạy `.venv/bin/python -m unittest discover -s tests -v`: **33 kiểm thử đạt**, không có kiểm thử bỏ qua trong lần này. Có chạy Chromium cho giao diện và FFmpeg cho MP4; phản hồi Shopee/OpenAI/Facebook vẫn giả lập.
 - Đã kiểm tra `.env`, `.env.local`, runtime, virtualenv và SQLite đều được Git bỏ qua. Kết quả kiểm thử không chứng minh chất lượng AI thật.
-- Repository chưa có remote refs tại thời điểm kiểm tra cuối trước commit; chuẩn bị commit đầu tiên trên `main`, gồm mã app đã làm trong cuộc trò chuyện và bản phản biện/sửa lỗi hiện tại.
+- Đã tạo và đẩy commit đầu tiên `fd13800` lên `main`, gồm mã app đã làm trong cuộc trò chuyện và bản phản biện/sửa lỗi hiện tại. Đã đọc lại remote ref để xác minh SHA trùng local; bản cập nhật note xác nhận kết quả được lưu trong commit kế tiếp.
+- Đã khởi động lại app với bản sửa: `/api/health` trả thành công cho địa chỉ cục bộ, yêu cầu GET với `Host: attacker.example` trả HTTP 403. Trạng thái AI/Facebook vẫn là chưa cấu hình; không gọi dịch vụ trả phí hoặc đăng bài thật trong lượt này.
 - Bằng chứng trước đó: link quạt GOOJODOQ shop `1053077389`, item `25176208160` bị proxy chặn CONNECT 403. Chưa có khóa AI hoặc kết nối Facebook được xác minh. Chưa tạo video thật của sản phẩm này.
 - Việc cần làm tiếp theo theo thứ tự: xác minh nguồn sản phẩm thật → chạy kịch bản trên nhiều nhóm sản phẩm → đo phí và chất lượng → chọn/tích hợp dịch vụ sinh cảnh video → kiểm chứng đăng một Page thử nghiệm → đo hiệu quả affiliate. Không đóng gói ở giai đoạn này.
 

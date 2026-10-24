@@ -96,6 +96,112 @@
 
 **Kiểm tra lượt này:** chỉ sửa `NOTES.md`, kiểm tra diff/định dạng và đồng bộ Git. Không chạy lại bộ kiểm thử ứng dụng vì không thay mã; không gọi AI trả phí, không sinh video và không đăng bài thật.
 
+## 2026-10-24 (buổi chiều) — Đọc lại note, phản biện bổ sung, và giao tiếp 2 AI qua repo
+
+**Người yêu cầu lúc 16:11:** từ nay Muse và 1 AI khác sẽ giao tiếp với nhau qua repo này. Mục này vừa là bản đọc lại note, vừa là tin nhắn đầu tiên theo kênh đó.
+
+### 1. Đính chính về trình tự trong lượt này — để AI kia không hiểu nhầm
+
+- Lúc 15:40, khi mình kiểm tra repo lần đầu trong lượt này, GitHub trả lỗi
+  repo trống (409, chưa có nhánh/commit). Đó là trạng thái đúng lúc đó.
+- Trong lúc chờ duyệt ghi file, một phiên AI khác đã đẩy các commit
+  `fd13800`, `aa7a170`, `8c63369`, rồi `.env.example` của mình là `a4ff86b`.
+  Vì vậy khi mình thử tạo `NOTES.md` mới thì bị báo file đã tồn tại.
+- Bản nháp “repo trống, chưa có note cũ” của mình đã **không được đẩy**,
+  không ghi đè lên note của AI kia. Đây là cách xử lý đúng khi SHA đổi
+  giữa chừng: đọc lại main mới nhất rồi mới bổ sung, không dùng SHA cũ để đè.
+- Sửa trực tiếp đã xong trong lượt này: tạo `.env.example` (commit `a4ff86b`,
+  chỉ tên biến, không có khóa thật) vì `.gitignore` có ngoại lệ `!.env.example`
+  nhưng file đó chưa tồn tại. Đây là sửa tài liệu nhỏ, không đổi logic code.
+
+### 2. Đã đọc trong lượt này
+
+- `NOTES.md` bản mới nhất lúc đọc lại (blob SHA `116e9f63…`), `README.md`,
+  `docs/storyboard-flow.md`, `docs/reference-video.md`, `AGENTS.md`,
+  danh sách file gốc, `publishing.py`, `.gitignore`, `requirements.txt`,
+  một phần đầu `app.py`, danh sách file `tests/`.
+- Chưa đọc kỹ từng dòng `automation.py` / `storyboard.py`, chưa chạy lại
+  bộ kiểm thử qua GitHub MCP trong lượt này. Vì vậy mình **không nhận lại**
+  con số “33 kiểm thử đạt” của note trước thành kiểm chứng của mình;
+  đó vẫn là bằng chứng của phiên trước, ghi rõ trong note trước.
+
+### 3. Điểm đồng ý với 2 note trước
+
+- Đồng ý kết luận khả thi có điều kiện: làm được prototype cục bộ,
+  chưa đủ cơ sở gọi là công cụ tự động hoàn toàn đã sẵn sàng hoặc có lợi nhuận.
+- Đồng ý thứ tự ưu tiên: nguồn thật → video thật được người duyệt →
+  đo phí/chất lượng → mới tính đăng tự động, batch, nền tảng khác.
+- Đồng ý các cảnh báo đã ghi: AI kiểm tra ở lượt gọi riêng vẫn có thể
+  cùng model nên lỗi tương quan; “submitted” của Facebook chỉ là đã nhận,
+  chưa phải đã hiển thị; chống trùng chỉ là tương đồng văn bản, không phải
+  bảo đảm ý tưởng mới tuyệt đối.
+- Mục bổ sung thứ hai về chi phí, truy vết, cache dùng chung đã bao quát
+  phần lớn ý mình định viết, nên mình không lặp lại toàn bộ, chỉ bổ sung
+  các điểm dưới đây.
+
+### 4. Phản biện bổ sung
+
+1. **Tên repo gây hiểu lầm, sản phẩm thực tế thì không phải “reup”.**
+   Lý do: tên `reup-shopee-aff` gợi ý tải lại video của người khác, nhưng
+   app thực tế tạo video slideshow mới từ tên/mô tả/ảnh sản phẩm Shopee,
+   kèm lời đọc AI, không tải lại video của creator khác. Về mặt bản quyền,
+   hướng này tốt hơn reup nguyên bản rất nhiều.
+   Rủi ro còn lại: người mới vào repo, hoặc chính chủ repo sau này, có thể
+   hiểu nhầm tên và yêu cầu thêm tính năng reup video người khác.
+   Đề xuất, chưa sửa trong lượt này để tránh xung đột: ghi rõ ngay đầu
+   `README.md` một câu “Không phải công cụ reup video của người khác”,
+   hoặc đổi tên repo khi chủ repo đồng ý. Nhờ AI kia quyết và ghi lại
+   quyết định vào note này.
+2. **Blocker số 1 vẫn là Shopee, chưa thay đổi.**
+   Lý do: bằng chứng duy nhất về nguồn thật vẫn là proxy chặn CONNECT 403
+   với link quạt GOOJODOQ (shop `1053077389`, item `25176208160`).
+   Chưa có video thật nào của sản phẩm thật. Mọi kết luận về chất lượng
+   kịch bản, giọng đọc, tỉ lệ dùng được đều chưa có cơ sở cho tới khi
+   cửa này mở.
+3. **Facebook Page Video chưa phải là Reels.**
+   Lý do: `publishing.py` dùng `POST /{page-id}/videos` trên Graph Video.
+   README đã ghi đúng điểm này, nhưng tên dự án và kỳ vọng “đăng Reels”
+   dễ làm người đọc tưởng đã xong Reels. Chưa có kiểm chứng bài đăng
+   hiển thị dạng Reels, chưa có polling trạng thái sau upload.
+   Đề xuất: trước khi gọi là “đăng Reels tự động”, phải có 1 bài đăng thử
+   trên Page thử nghiệm và xác nhận nó hiển thị ở đâu, dạng gì.
+4. **Ba cửa bắt buộc trước khi bật tự động / batch.**
+   Lý do: chi phí 7–9 lượt AI/TTS mỗi video (chưa tính sinh cảnh) nhân với
+   batch 20 link × 3 kiểu sẽ rất lớn, trong khi chưa có video thật nào
+   được duyệt. Cửa 1: lấy được 1 sản phẩm Shopee thật. Cửa 2: 1 video thật
+   được người xem/nghe và duyệt. Cửa 3: 1 bài đăng thử được xác nhận hiển
+   thị và đo được click. Chưa qua 3 cửa thì giữ `FB_AUTO_PUBLISH=false`,
+   không batch lớn.
+
+### 5. Quy tắc giao tiếp giữa 2 AI qua repo — từ nay áp dụng
+
+- Kênh chính là file này (`NOTES.md`). Trước khi sửa, đọc bản mới nhất
+  trên `main`. Sau mỗi nhóm thay đổi, bổ sung một mục mới có ngày/giờ,
+  không xóa mục cũ, không ghi đè lịch sử.
+- Tránh xung đột: lấy SHA mới nhất của file trước khi đẩy. Nếu SHA đã đổi
+  trong lúc làm việc, đọc lại, hợp nhất rồi mới đẩy lại. Không dùng SHA cũ.
+- Mỗi mục mới phải ghi rõ: đã đọc file nào, đã sửa file nào, đã kiểm chứng
+  bằng gì (test thật / giả lập / chưa kiểm chứng), và cần AI kia làm gì tiếp.
+- Không ghi khóa, token, dữ liệu tài khoản, link affiliate riêng tư vào
+  note hay commit. Chỉ ghi tên biến, mã shop/item đã công khai trong note
+  trước nếu cần đối soát.
+- Nếu 2 AI cùng muốn sửa 1 file, người sau hợp nhất thay đổi của người
+  trước, không đẩy đè. Nếu không hợp nhất được, ghi vào note là đang
+  chờ người kia, không tự ý giải quyết bằng cách xóa.
+- Tin nhắn cho AI kia trong lượt này: nhờ bạn (1) quyết câu ghi rõ
+  “không phải công cụ reup” ở README, (2) giữ nguyên 3 cửa ở mục 4
+  trước khi bật tự động/batch, (3) khi bạn đẩy tiếp, ghi rõ SHA/commit
+  để mình đọc lại không bị lệch.
+
+### 6. Sửa trực tiếp trong lượt này, và việc chưa làm
+
+- Đã sửa: tạo `.env.example` (commit `a4ff86b`); bổ sung mục này vào `NOTES.md`.
+- Chưa sửa: `README.md` (câu làm rõ không phải reup), logic code, test.
+  Lý do chưa sửa README: tránh xung đột với AI kia đang làm cùng repo,
+  và câu chữ này cần chủ repo / AI kia đồng ý trước khi thành quy ước chung.
+- Chưa kiểm chứng: không chạy test, không gọi AI trả phí, không lấy
+  Shopee thật, không đăng Facebook thật trong lượt này.
+
 ## Mẫu ghi chú cho các lần tiếp theo
 
 - Ngày và mục tiêu.

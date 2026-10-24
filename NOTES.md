@@ -202,6 +202,42 @@
 - Chưa kiểm chứng: không chạy test, không gọi AI trả phí, không lấy
   Shopee thật, không đăng Facebook thật trong lượt này.
 
+## 2026-10-24 (buổi tối) — Tích hợp bài học từ HL Studio vào repo
+
+**Yêu cầu người dùng:** sau khi nghe phân tích “có thể học gì từ app đó”,
+người dùng đồng ý và yêu cầu tích hợp vào repo.
+
+**Ranh giới đã giữ:** chỉ tích hợp ý tưởng, kiến trúc và luồng sản phẩm.
+Không sao chép code, model, giọng đọc, tài nguyên, thương hiệu hay cơ chế
+bản quyền của HL Studio. Không phân tích, không trích, không tìm cách vượt
+qua trial / chữ mờ / khóa theo máy của app đó.
+
+**Đã làm trong lượt này:**
+- Tạo `docs/hl-studio-lessons.md` (commit `694becab`): kiến trúc vỏ desktop
+  mỏng + server local, luồng 1 lần ảnh → kịch bản → giọng → video, giọng
+  offline (lợi/hại), cài đặt 1 lần là chạy, tách tiền app khỏi tiền AI,
+  và các điểm không học theo (bundle trùng, phụ thuộc chéo, chỉ có `.pyc`,
+  Windows-only).
+- Đối chiếu với repo này: luồng link → kịch bản → giọng → video và các API
+  project / brand / caption / spin đã có trong `app.py`, nên không thêm tính
+  năng mới chỉ vì HL có. Ưu tiên vẫn là 3 cửa trong note trước: nguồn thật,
+  video thật được duyệt, bài đăng thử hiển thị.
+- Chưa làm (ghi rõ để AI kia không hiểu nhầm là đã xong): script khởi động
+  1 lần + vỏ desktop, giọng offline bundle sẵn, cơ chế trial/khóa máy.
+  Các việc này cần test máy thật / đo chi phí trước, làm riêng, không viết
+  vội trong lượt tài liệu này.
+- Cập nhật `README.md` để liên kết tới `docs/hl-studio-lessons.md` và ghi
+  vào mục này trong `NOTES.md`.
+
+**Kiểm chứng lượt này:** chỉ sửa tài liệu, không đổi logic code, không chạy
+test ứng dụng, không gọi AI trả phí, không lấy Shopee thật, không đăng
+Facebook thật. File `docs/hl-studio-lessons.md` đã đẩy thành công, SHA blob
+`6529a735927d17815082bc60c68c99afa94bb4e4`.
+
+**Nhắn cho AI kia:** khi bạn làm tiếp, đừng thêm tính năng mới từ danh sách
+HL nếu chưa qua 3 cửa. Nếu bạn làm script khởi động 1 lần, ghi rõ đã test
+trên máy nào, hệ điều hành nào, và không bundle model nặng vào repo.
+
 ## Mẫu ghi chú cho các lần tiếp theo
 
 - Ngày và mục tiêu.

@@ -51,6 +51,51 @@
 - Bằng chứng trước đó: link quạt GOOJODOQ shop `1053077389`, item `25176208160` bị proxy chặn CONNECT 403. Chưa có khóa AI hoặc kết nối Facebook được xác minh. Chưa tạo video thật của sản phẩm này.
 - Việc cần làm tiếp theo theo thứ tự: xác minh nguồn sản phẩm thật → chạy kịch bản trên nhiều nhóm sản phẩm → đo phí và chất lượng → chọn/tích hợp dịch vụ sinh cảnh video → kiểm chứng đăng một Page thử nghiệm → đo hiệu quả affiliate. Không đóng gói ở giai đoạn này.
 
+## 2026-10-24 — Bổ sung phản biện về sản phẩm và cách thử nghiệm
+
+**Đã đọc lại:** note chung, quy ước trong `AGENTS.md`, bộ chọn góc/hạn chế chống trùng, API nhận batch và adapter Facebook. Đã fetch `main` trước khi sửa; local và remote không lệch commit.
+
+**Phạm vi lượt này:** ghi đề xuất và tiêu chí kiểm chứng theo câu hỏi của người dùng. Chỉ thay đổi tài liệu; các đề xuất dưới đây chưa được coi là chức năng đã triển khai.
+
+### 1. Một sản phẩm cần nhiều góc để học, không cần chốt một kịch bản duy nhất
+
+- Mục tiêu nên là “kịch bản phù hợp sản phẩm và tạo được kết quả”, thay vì chỉ “mỗi sản phẩm một bản khác nhau”. Tính mới về câu chữ chưa chứng minh người xem muốn bấm link hoặc mua.
+- Đề xuất: giữ mỗi bản video có một góc rõ ràng, thử hai góc cho cùng một sản phẩm: ví dụ tình huống sử dụng và soi chi tiết. Chỉ thay một yếu tố chính khi so sánh, ghi thời điểm/tệp/ngữ cảnh đăng để tránh kết luận từ các bài có điều kiện quá khác nhau.
+- Chống trùng hiện là lọc tương đồng văn bản; có thể từ chối một câu mở đầu hợp lệ của sản phẩm khác và cũng có thể bỏ sót diễn đạt khác nhưng cùng ý. Cần đo cả từ chối nhầm và bỏ sót trên dữ liệu thật trước khi chỉnh ngưỡng. Không bỏ cơ chế chống sao chép nguyên bản chỉ để tăng tỷ lệ hoàn tất.
+
+### 2. Cần giới hạn chi phí và ghi nhận sử dụng trước khi tăng batch
+
+- Bằng chứng mã hiện tại: mỗi video hoàn tất luồng dùng 4 lượt biên tập AI và 3–5 lượt TTS, tức 7–9 lượt gọi; chưa bao gồm dịch vụ sinh cảnh video. Một lượt 10 video có thể có 70–90 lượt gọi. Đây là đếm lệnh, không phải dự báo số tiền; phí phụ thuộc token, ký tự/âm thanh, model và bảng giá tại thời điểm dùng.
+- Đề xuất ưu tiên: hiển thị số video sau khi nhân link × kiểu trước khi gửi, cho phép đặt trần ngân sách/số video và ghi token/âm thanh/chi phí thực tế theo tác vụ. Cần định nghĩa rõ khi nhà cung cấp không trả usage: ghi “chưa biết”, không ghi 0 đồng.
+- Worker limit hiện chỉ giới hạn đồng thời, không giới hạn tổng tiền. Chưa triển khai trần tiền hoặc bộ đo chi phí.
+
+### 3. Tự động hóa toàn luồng vẫn nên giữ ảnh sản phẩm gốc
+
+- Các cảnh cần đúng logo, hình dáng, màu và nhãn nên dùng ảnh sản phẩm gốc; AI có thể tạo bối cảnh/cảnh bổ trợ và điều phối biên tập. Đây vẫn là một luồng người dùng chỉ đưa link.
+- Khi thêm dịch vụ sinh video, cần kiểm tra từng cảnh với ảnh tham chiếu và loại cảnh sai sản phẩm. Chưa có cơ sở hứa “video nào cũng giữ đúng sản phẩm”, nhất là đồ có chữ nhỏ, bộ phận chuyển động hoặc nhiều biến thể.
+- Đề xuất: bắt đầu với một nhà cung cấp, một định dạng dọc và một nhóm hàng dễ kiểm chứng; chưa mở rộng ngay sang mọi ngành hàng hoặc mọi nền tảng.
+
+### 4. Cần dữ liệu truy vết và điều kiện hoàn tất rõ ràng
+
+- Nên lưu phiên bản prompt, model thực tế, thời điểm lấy nguồn, bản chụp dữ liệu nguồn, hash nội dung và mã yêu cầu nhà cung cấp (không lưu token). Khi giá/mô tả hoặc model thay đổi, những dữ liệu này giúp giải thích vì sao hai lần tạo khác nhau. Hiện đã lưu sản phẩm/storyboard, nhưng chưa có bộ thông tin truy vết đầy đủ này.
+- Facebook trả ID mới có nghĩa là nhận upload. Bước tiếp theo cần phân biệt “đã nhận”, “đang xử lý”, “đã hiển thị”, “lỗi”; chưa có polling/đối soát sau upload.
+- Link affiliate đang được giữ nguyên. Không nên tự thêm hoặc thay tham số tracking khi chưa có quy tắc được nền tảng hỗ trợ; cần đối chiếu đơn/hoa hồng từ dữ liệu affiliate thật, không lấy lượt xem làm thay thế.
+
+### 5. Tận dụng dữ liệu chung khi tạo nhiều phiên bản
+
+- Hiện các tác vụ phiên bản có thể cùng tải lại nguồn/ảnh và lập hồ sơ cho một sản phẩm. Khi nguồn ổn định và đã xác minh, có thể dùng chung snapshot nguồn/ảnh/hồ sơ trong một batch; góc, lời đọc và storyboard vẫn riêng.
+- Cache phải dựa trên danh tính sản phẩm, nội dung nguồn và phiên bản model/prompt; có thời hạn, không làm mất link tracking riêng của từng tác vụ. Chưa triển khai cache dùng chung hoặc gộp các yêu cầu đang chạy.
+
+### Ưu tiên thực hiện và cách quyết định tiếp
+
+1. Giải quyết truy cập nguồn thật và khóa dịch vụ; chưa có điều kiện này thì không dùng kiểm thử giả lập để kết luận hiệu quả sản phẩm.
+2. Chạy thử 3 sản phẩm, mỗi sản phẩm 2 góc: 6 video. Theo mã hiện tại, dự kiến 42–54 lượt gọi AI/TTS nếu đều chạy đủ các bước, chưa tính sinh cảnh video. Đây là kế hoạch đề xuất, chưa thực hiện và chưa phát sinh phí trong lượt này.
+3. Ghi đủ: dữ liệu đúng/sai, số lần bị từ chối nhầm, cảnh lỗi, thời gian, phí thực tế và số video dùng được. Tính phí trên **video dùng được**, gồm cả chi phí của các lần thất bại.
+4. Khi đăng thử có đủ dữ liệu, theo dõi lượt xem đủ lâu, lượt nhấp, đơn được ghi nhận và hoa hồng sau hoàn/hủy. Thử 6 video chỉ giúp phát hiện lỗi ban đầu, chưa đủ chứng minh lợi nhuận hoặc góc nào luôn tốt hơn.
+5. Đạt điều kiện chất lượng/chi phí đã thống nhất rồi mới tăng worker, batch và nền tảng.
+
+**Kiểm tra lượt này:** chỉ sửa `NOTES.md`, kiểm tra diff/định dạng và đồng bộ Git. Không chạy lại bộ kiểm thử ứng dụng vì không thay mã; không gọi AI trả phí, không sinh video và không đăng bài thật.
+
 ## Mẫu ghi chú cho các lần tiếp theo
 
 - Ngày và mục tiêu.
